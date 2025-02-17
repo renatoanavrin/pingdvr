@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+
+
+<html>
+    
+    <script>
+
+        const ips = [
+            {nome: "localhost", ip: "127.0.0.1"},
+            {nome: "Google", ip: "8.8.8.8"},
+            {nome: "Cloudflare", ip: "1.1.1.1"},
+            {nome: "Roteador", ip: "192.168.1.1"}
+        ];
+        async function checkPing(ip) {
+            const url = `http://${ip}:80`; // Tenta acessar a porta 80 (HTTP)
+            try {
+                const controller = new AbortController();
+                const timeout = setTimeout(() => controller.abort(), 2000); // Timeout de 2 segundos
+                await fetch(url, {mode: 'no-cors', signal: controller.signal});
+                clearTimeout(timeout);
+                return "ONLINE";
+            } catch {
+                return "OFFLINE";
+            }
+        }
+
+        async function pingAll() {
+            for (const {nome, ip} of ips) {
+                const status = await checkPing(ip);
+                console.log(`${nome} (${ip}) está ${status}`);
+            }
+        }
+
+        pingAll();
+
+
+
+    </script>
+    
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div>TODO write content</div>
+    </body>
+
+    
+</html>
